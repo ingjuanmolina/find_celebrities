@@ -2,15 +2,10 @@ package com.globant.celebrity.finder.model;
 
 import com.globant.celebrity.finder.service.PersonService;
 import com.globant.celebrity.finder.service.RelationService;
-import org.hamcrest.Matchers;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.junit4.SpringRunner;
-
-import java.util.LinkedList;
-import java.util.List;
 
 @RunWith(SpringRunner.class)
 public class CelebrityValidatorTest {
@@ -28,7 +23,7 @@ public class CelebrityValidatorTest {
             personService.registerPerson(new Person(i));
         }
         int targetId = 7;
-        Person known = personService.finbById(targetId);
+        Person known = personService.findById(targetId);
         for(Person subject : personService.getAll()){
             if(subject.getId() != targetId){
                 relationService.createRelation(subject, known);
@@ -50,7 +45,7 @@ public class CelebrityValidatorTest {
     }
 
     private void relatePersons(int idSubject, int idKnown){
-        relationService.createRelation(personService.finbById(idSubject), personService.finbById(idKnown));
+        relationService.createRelation(personService.findById(idSubject), personService.findById(idKnown));
     }
 
     @Test

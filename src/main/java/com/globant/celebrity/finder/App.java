@@ -5,11 +5,9 @@ import com.globant.celebrity.finder.model.Person;
 import com.globant.celebrity.finder.service.PersonService;
 import com.globant.celebrity.finder.service.RelationService;
 
-import java.util.Random;
-
 public class App {
 
-    private PersonService personService = new PersonService();
+    private PersonService personService = new PersonService(null);
     private RelationService relationService = new RelationService();
 
     public void run(){
@@ -25,7 +23,7 @@ public class App {
     }
 
     public void setRelations(){
-        Person known = personService.finbById(7);
+        Person known = personService.findById(7);
         for(Person subject : personService.getAll()){
             if(subject.getId() != 7){
                 relationService.createRelation(subject, known);
@@ -47,7 +45,7 @@ public class App {
     }
 
     private void relatePersons(int idSubject, int idKnown){
-        relationService.createRelation(personService.finbById(idSubject), personService.finbById(idKnown));
+        relationService.createRelation(personService.findById(idSubject), personService.findById(idKnown));
     }
 
     private void findCelebrity(){

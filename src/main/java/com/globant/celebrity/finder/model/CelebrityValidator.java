@@ -5,8 +5,8 @@ import com.globant.celebrity.finder.service.RelationService;
 
 public class CelebrityValidator {
 
-    private PersonService personService = new PersonService();
-    private RelationService relationService = new RelationService();
+    private PersonService personService;
+    private RelationService relationService;
 
     public CelebrityValidator(PersonService personService, RelationService relationService) {
         this.personService = personService;
