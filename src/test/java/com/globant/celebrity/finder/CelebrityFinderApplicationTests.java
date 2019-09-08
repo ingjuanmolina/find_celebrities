@@ -9,7 +9,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(Suite.class)
-@Suite.SuiteClasses({PersonRepositoryTest.class, RelationRepositoryTest.class})
+@Suite.SuiteClasses({PersonRepositoryTest.class,
+		RelationRepositoryTest.class,
+		CelebrityFinderApplicationTests.class})
 @SpringBootTest
 public class CelebrityFinderApplicationTests {
 
