@@ -1,9 +1,8 @@
 package com.globant.celebrity.finder.model;
 
-import org.omg.SendingContext.RunTime;
-
 public class Relation {
 
+    private int id;
     private Person subject;
     private Person known;
 
@@ -15,11 +14,27 @@ public class Relation {
         this.known = known;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public Person getSubject() {
         return subject;
     }
 
+    public void setSubject(Person subject) {
+        this.subject = subject;
+    }
+
     public Person getKnown() {
         return known;
+    }
+
+    public void setKnown(Person known) {
+        this.known = known;
     }
 }

@@ -32,12 +32,12 @@ public class CelebrityValidator {
     }
 
     private boolean knowsSomeone(Person person){
-        return relationService.getPersonRelations(person).size() > 0;
+        return personService.getPersonRelations(person).size() > 0;
     }
 
     private boolean guestKnowsCandidate(Person guest, Person candidate){
         if(knowsSomeone(guest)){
-            return relationService.getPersonRelations(guest).contains(candidate);
+            return personService.getPersonRelations(guest).contains(candidate);
         }
         return false;
     }

@@ -1,8 +1,21 @@
 package com.globant.celebrity.finder.model;
 
+import javax.persistence.*;
+import java.util.Set;
+
+@Entity
+@Table(name = "person")
 public class Person {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
+    @JoinTable(name = "relation", joinColumns = {
+            @JoinColumn(name = "subject", referencedColumnName = "id")}, inverseJoinColumns = {
+            @JoinColumn(name = "known", referencedColumnName = "id")})
+    @ManyToMany
+    private Set<Person> personSet;
 
     public Person(){}
 
@@ -12,6 +25,18 @@ public class Person {
 
     public int getId() {
         return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public Set<Person> getPersonSet() {
+        return personSet;
+    }
+
+    public void setPersonSet(Set<Person> personSet) {
+        this.personSet = personSet;
     }
 
     @Override
