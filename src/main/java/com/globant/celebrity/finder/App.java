@@ -4,11 +4,13 @@ import com.globant.celebrity.finder.model.CelebrityValidator;
 import com.globant.celebrity.finder.model.Person;
 import com.globant.celebrity.finder.service.PersonService;
 import com.globant.celebrity.finder.service.RelationService;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public class App {
 
     private PersonService personService = new PersonService(null);
-    private RelationService relationService = new RelationService();
+    @Autowired
+    private RelationService relationService;
 
     public void run(){
         registerPersons();

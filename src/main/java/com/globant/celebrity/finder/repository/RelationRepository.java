@@ -2,9 +2,12 @@ package com.globant.celebrity.finder.repository;
 
 import com.globant.celebrity.finder.model.Person;
 import com.globant.celebrity.finder.model.Relation;
+import org.springframework.stereotype.Repository;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.*;
 
+@Repository
 public class RelationRepository {
 
     private Map<Person, Set<Person>> relationRepository;
