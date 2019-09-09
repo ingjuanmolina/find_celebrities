@@ -2,9 +2,11 @@ package com.globant.celebrity.finder.model;
 
 public class Relation {
 
-    private int id;
     private Person subject;
     private Person known;
+
+    public Relation() {
+    }
 
     public Relation(Person subject, Person known) {
         if(subject.equals(known)){
@@ -12,14 +14,6 @@ public class Relation {
         }
         this.subject = subject;
         this.known = known;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public Person getSubject() {

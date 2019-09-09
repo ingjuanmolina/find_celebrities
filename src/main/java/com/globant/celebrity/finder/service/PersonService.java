@@ -2,9 +2,8 @@ package com.globant.celebrity.finder.service;
 
 import com.globant.celebrity.finder.exception.PersonNotFoundException;
 import com.globant.celebrity.finder.model.Person;
+import com.globant.celebrity.finder.model.Relation;
 import com.globant.celebrity.finder.repository.PersonH2Repository;
-import com.globant.celebrity.finder.repository.PersonRepository;
-import org.omg.CORBA.Object;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,6 +25,14 @@ public class PersonService {
         return personRepository.save(person);
     }
 
+    public Relation establishRelation(Relation relation){
+        Person subject = findById(relation.getSubject().getId());
+        Person known = findById(relation.getKnown().getId());
+        subject.getPersonSet().add(known);
+        personRepository.save(subject);
+        return new Relation(subject, known);
+    }
+
     public Person findById(int id) {
         Person person = personRepository.findById(id);
         if(Objects.isNull(person)){
@@ -34,19 +41,11 @@ public class PersonService {
         return person;
     }
 
-    public boolean isRegistered(Person person){
-        Person found = personRepository.getOne(person.getId());
-        if(Objects.nonNull(found)){
-            return true;
-        }
-        return false;
-    }
-
     public List<Person> getAll(){
         return personRepository.findAll();
     }
 
     public Set<Person> getPersonRelations(Person person){
-        return person.getPersonSet();
+        return personRepository.findById(person.getId()).getPersonSet();
     }
 }

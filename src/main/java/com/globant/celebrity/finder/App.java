@@ -3,14 +3,14 @@ package com.globant.celebrity.finder;
 import com.globant.celebrity.finder.model.CelebrityValidator;
 import com.globant.celebrity.finder.model.Person;
 import com.globant.celebrity.finder.service.PersonService;
-import com.globant.celebrity.finder.service.RelationService;
+import com.globant.celebrity.finder.service.RelationServiceLocal;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class App {
 
     private PersonService personService = new PersonService(null);
     @Autowired
-    private RelationService relationService;
+    private RelationServiceLocal relationServiceLocal;
 
     public void run(){
         registerPersons();
@@ -28,7 +28,7 @@ public class App {
         Person known = personService.findById(7);
         for(Person subject : personService.getAll()){
             if(subject.getId() != 7){
-                relationService.createRelation(subject, known);
+                relationServiceLocal.createRelation(subject, known);
             }
         }
         relatePersons(1, 2);
@@ -47,11 +47,11 @@ public class App {
     }
 
     private void relatePersons(int idSubject, int idKnown){
-        relationService.createRelation(personService.findById(idSubject), personService.findById(idKnown));
+        relationServiceLocal.createRelation(personService.findById(idSubject), personService.findById(idKnown));
     }
 
     private void findCelebrity(){
-        CelebrityValidator celebrityValidator = new CelebrityValidator(personService, relationService);
+        CelebrityValidator celebrityValidator = new CelebrityValidator(personService, relationServiceLocal);
         System.out.println("Celebrity: " +  celebrityValidator.findCelebrity());
     }
 }

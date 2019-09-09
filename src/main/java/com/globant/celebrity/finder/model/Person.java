@@ -1,6 +1,9 @@
 package com.globant.celebrity.finder.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -11,13 +14,21 @@ public class Person {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    private String name;
+
     @JoinTable(name = "relation", joinColumns = {
             @JoinColumn(name = "subject", referencedColumnName = "id")}, inverseJoinColumns = {
             @JoinColumn(name = "known", referencedColumnName = "id")})
     @ManyToMany
+    @JsonIgnore
     private Set<Person> personSet;
 
     public Person(){}
+
+    public Person(String name, Set<Person> personSet) {
+        this.name = name;
+        this.personSet = personSet;
+    }
 
     public Person(int id) {
         this.id = id;
@@ -31,11 +42,22 @@ public class Person {
         this.id = id;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public Set<Person> getPersonSet() {
         return personSet;
     }
 
     public void setPersonSet(Set<Person> personSet) {
+        if(personSet==null){
+            personSet = new HashSet<>();
+        }
         this.personSet = personSet;
     }
 

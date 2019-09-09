@@ -1,16 +1,16 @@
 package com.globant.celebrity.finder.model;
 
 import com.globant.celebrity.finder.service.PersonService;
-import com.globant.celebrity.finder.service.RelationService;
+import com.globant.celebrity.finder.service.RelationServiceLocal;
 
 public class CelebrityValidator {
 
     private PersonService personService;
-    private RelationService relationService;
+    private RelationServiceLocal relationServiceLocal;
 
-    public CelebrityValidator(PersonService personService, RelationService relationService) {
+    public CelebrityValidator(PersonService personService, RelationServiceLocal relationServiceLocal) {
         this.personService = personService;
-        this.relationService = relationService;
+        this.relationServiceLocal = relationServiceLocal;
     }
 
     public Person findCelebrity(){
