@@ -1,34 +1,34 @@
 package com.globant.celebrity.finder.model;
 
+import com.globant.celebrity.finder.exception.PersonNotFoundException;
 import com.globant.celebrity.finder.service.PersonService;
-import com.globant.celebrity.finder.service.RelationServiceLocal;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class CelebrityValidator {
 
     private PersonService personService;
-    private RelationServiceLocal relationServiceLocal;
 
-    public CelebrityValidator(PersonService personService, RelationServiceLocal relationServiceLocal) {
+    public CelebrityValidator(PersonService personService) {
         this.personService = personService;
-        this.relationServiceLocal = relationServiceLocal;
     }
 
     public Person findCelebrity(){
-        for(Person candidate : personService.getAll()){
-            boolean isCelebrity = true;
-            if(!knowsSomeone(candidate)){
-                for(Person guest : personService.getAll()){
-                    if(guest.equals(candidate)){
-                        continue;
-                    }
-                    isCelebrity &= guestKnowsCandidate(guest, candidate);
-                }
-                if(isCelebrity){
-                    return candidate;
-                }
+        List<Person> guests = personService.getAll();
+        List<Person> personWithOutKnownPeople = guests.parallelStream()
+                        .filter(c -> c.getPersonSet().size() == 0)
+                        .collect(Collectors.toList());
+
+        for(Person candidate : personWithOutKnownPeople){
+            boolean isCelebrity = guests.parallelStream()
+                    .filter(g -> !g.equals(candidate))
+                    .allMatch(g -> guestKnowsCandidate(g, candidate));
+            if(isCelebrity){
+                return candidate;
             }
         }
-        return null;
+        throw new PersonNotFoundException("There are no celebrities");
     }
 
     private boolean knowsSomeone(Person person){

@@ -6,11 +6,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class CelebrityFinderApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(CelebrityFinderApplication.class, args);
-		/*
-		App app = new App();
-		app.run();*/
-	}
+	public static void main(String[] args) { SpringApplication.run(CelebrityFinderApplication.class, args); }
 
 }

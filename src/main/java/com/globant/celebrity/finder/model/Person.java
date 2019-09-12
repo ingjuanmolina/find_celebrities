@@ -19,7 +19,7 @@ public class Person {
     @JoinTable(name = "relation", joinColumns = {
             @JoinColumn(name = "subject", referencedColumnName = "id")}, inverseJoinColumns = {
             @JoinColumn(name = "known", referencedColumnName = "id")})
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
     @JsonIgnore
     private Set<Person> personSet;
 
@@ -28,6 +28,12 @@ public class Person {
     public Person(String name, Set<Person> personSet) {
         this.name = name;
         this.personSet = personSet;
+    }
+
+    public Person(int id, String name){
+        this.id = id;
+        this.name = name;
+        this.personSet = new HashSet<>();
     }
 
     public Person(int id) {
@@ -51,6 +57,9 @@ public class Person {
     }
 
     public Set<Person> getPersonSet() {
+        if(this.personSet==null){
+            this.personSet = new HashSet<>();
+        }
         return personSet;
     }
 

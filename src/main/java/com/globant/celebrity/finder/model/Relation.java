@@ -10,7 +10,7 @@ public class Relation {
 
     public Relation(Person subject, Person known) {
         if(subject.equals(known)){
-            throw new RuntimeException("Can´t relate a person with itself");
+            throw new RuntimeException("Can't relate a person with itself");
         }
         this.subject = subject;
         this.known = known;

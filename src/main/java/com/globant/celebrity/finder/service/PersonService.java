@@ -3,7 +3,7 @@ package com.globant.celebrity.finder.service;
 import com.globant.celebrity.finder.exception.PersonNotFoundException;
 import com.globant.celebrity.finder.model.Person;
 import com.globant.celebrity.finder.model.Relation;
-import com.globant.celebrity.finder.repository.PersonH2Repository;
+import com.globant.celebrity.finder.repository.PersonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,10 +14,10 @@ import java.util.Set;
 @Service
 public class PersonService {
 
-    private PersonH2Repository personRepository;
+    private PersonRepository personRepository;
 
     @Autowired
-    public PersonService(PersonH2Repository personRepository){
+    public PersonService(PersonRepository personRepository){
         this.personRepository = personRepository;
     }
 
@@ -36,7 +36,7 @@ public class PersonService {
     public Person findById(int id) {
         Person person = personRepository.findById(id);
         if(Objects.isNull(person)){
-            throw new PersonNotFoundException("Person not found");
+            throw new PersonNotFoundException(String.format("Person with id %d was not found", id));
         }
         return person;
     }
