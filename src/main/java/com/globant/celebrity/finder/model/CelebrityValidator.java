@@ -23,22 +23,11 @@ public class CelebrityValidator {
         for(Person candidate : personWithOutKnownPeople){
             boolean isCelebrity = guests.parallelStream()
                     .filter(g -> !g.equals(candidate))
-                    .allMatch(g -> guestKnowsCandidate(g, candidate));
+                    .allMatch(g -> g.knowsPerson(candidate));
             if(isCelebrity){
                 return candidate;
             }
         }
         throw new PersonNotFoundException("There are no celebrities");
-    }
-
-    private boolean knowsSomeone(Person person){
-        return personService.getPersonRelations(person).isEmpty();
-    }
-
-    private boolean guestKnowsCandidate(Person guest, Person candidate){
-        if(knowsSomeone(guest)){
-            return personService.getPersonRelations(guest).contains(candidate);
-        }
-        return false;
     }
 }

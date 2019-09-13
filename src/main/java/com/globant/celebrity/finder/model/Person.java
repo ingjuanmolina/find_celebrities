@@ -45,6 +45,10 @@ public class Person {
         this.id = id;
     }
 
+    public boolean knowsPerson(Person person){
+        return this.getPersonSet().contains(person);
+    }
+
     public int getId() {
         return id;
     }

@@ -28,6 +28,4 @@ INSERT INTO relation VALUES(8, 3);
 INSERT INTO relation VALUES(9, 3);
 INSERT INTO relation VALUES(10, 3);
 INSERT INTO relation VALUES(11, 3);
--- INSERT INTO relation VALUES(12, 3);
-
-
+INSERT INTO relation VALUES(12, 3);
