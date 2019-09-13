@@ -2,35 +2,30 @@ package com.globant.celebrity.finder.service;
 
 import com.globant.celebrity.finder.model.Person;
 import com.globant.celebrity.finder.model.Relation;
-import com.globant.celebrity.finder.repository.PersonRepository;
+import com.globant.celebrity.finder.repository.PersonDBRepository;
 import org.hamcrest.Matchers;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
-
-import java.util.HashSet;
 
 public class PersonServiceTest {
 
 
-    private PersonRepository personRepository;
+    private PersonDBRepository personDBRepository;
     private PersonService personService;
     private Person subject;
     private Person known;
 
     @Before
     public void setup(){
-        personRepository = Mockito.mock(PersonRepository.class);
-        personService = new PersonService(personRepository);
+        personDBRepository = Mockito.mock(PersonDBRepository.class);
+        personService = new PersonService(personDBRepository);
         subject = new Person(1,"Juan");
         known = new Person(2, "Carlos");
-        Mockito.when(personRepository.findById(1)).thenReturn(subject);
-        Mockito.when(personRepository.findById(2)).thenReturn(known);
-        Mockito.when(personRepository.save(subject)).thenReturn(subject);
+        Mockito.when(personDBRepository.findById(1)).thenReturn(subject);
+        Mockito.when(personDBRepository.findById(2)).thenReturn(known);
+        Mockito.when(personDBRepository.save(subject)).thenReturn(subject);
     }
 
     @Test
@@ -55,7 +50,7 @@ public class PersonServiceTest {
     }
 
     @Test
-    public void a(){
+    public void subjectAndKnownAreRelated(){
         Relation relation = new Relation(subject, known);
         personService.establishRelation(relation);
         Assert.assertThat(personService.getPersonRelations(subject),

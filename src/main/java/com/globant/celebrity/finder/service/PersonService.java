@@ -3,7 +3,7 @@ package com.globant.celebrity.finder.service;
 import com.globant.celebrity.finder.exception.PersonNotFoundException;
 import com.globant.celebrity.finder.model.Person;
 import com.globant.celebrity.finder.model.Relation;
-import com.globant.celebrity.finder.repository.PersonRepository;
+import com.globant.celebrity.finder.repository.PersonDBRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,27 +14,27 @@ import java.util.Set;
 @Service
 public class PersonService {
 
-    private PersonRepository personRepository;
+    private PersonDBRepository personDBRepository;
 
     @Autowired
-    public PersonService(PersonRepository personRepository){
-        this.personRepository = personRepository;
+    public PersonService(PersonDBRepository personDBRepository){
+        this.personDBRepository = personDBRepository;
     }
 
     public Person registerPerson(Person person){
-        return personRepository.save(person);
+        return personDBRepository.save(person);
     }
 
     public Relation establishRelation(Relation relation){
         Person subject = findById(relation.getSubject().getId());
         Person known = findById(relation.getKnown().getId());
         subject.getPersonSet().add(known);
-        personRepository.save(subject);
+        personDBRepository.save(subject);
         return new Relation(subject, known);
     }
 
     public Person findById(int id) {
-        Person person = personRepository.findById(id);
+        Person person = personDBRepository.findById(id);
         if(Objects.isNull(person)){
             throw new PersonNotFoundException(String.format("Person with id %d was not found", id));
         }
@@ -42,10 +42,10 @@ public class PersonService {
     }
 
     public List<Person> getAll(){
-        return personRepository.findAll();
+        return personDBRepository.findAll();
     }
 
     public Set<Person> getPersonRelations(Person person){
-        return personRepository.findById(person.getId()).getPersonSet();
+        return personDBRepository.findById(person.getId()).getPersonSet();
     }
 }

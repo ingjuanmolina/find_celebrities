@@ -25,6 +25,11 @@ public class Person {
 
     public Person(){}
 
+    public Person(String name) {
+        this.name = name;
+        this.personSet = new HashSet<>();
+    }
+
     public Person(String name, Set<Person> personSet) {
         this.name = name;
         this.personSet = personSet;
@@ -85,6 +90,6 @@ public class Person {
 
     @Override
     public String toString() {
-        return String.format("Person id: %d", id);
+        return String.format("Person id: %d, %s", id, name);
     }
 }

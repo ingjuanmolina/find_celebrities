@@ -17,7 +17,7 @@ public class CelebrityValidator {
     public Person findCelebrity(){
         List<Person> guests = personService.getAll();
         List<Person> personWithOutKnownPeople = guests.parallelStream()
-                        .filter(c -> c.getPersonSet().size() == 0)
+                        .filter(c -> c.getPersonSet().isEmpty())
                         .collect(Collectors.toList());
 
         for(Person candidate : personWithOutKnownPeople){
@@ -32,7 +32,7 @@ public class CelebrityValidator {
     }
 
     private boolean knowsSomeone(Person person){
-        return personService.getPersonRelations(person).size() > 0;
+        return personService.getPersonRelations(person).isEmpty();
     }
 
     private boolean guestKnowsCandidate(Person guest, Person candidate){

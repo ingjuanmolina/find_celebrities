@@ -39,13 +39,12 @@ public class PersonEndpoint {
     @GetMapping("/id/{id}")
     public ResponseEntity<Person> findById(@PathVariable int id){
         Person found = personService.findById(id);
-        return new ResponseEntity<Person>(found, HttpStatus.OK);
+        return new ResponseEntity<>(found, HttpStatus.OK);
     }
 
     @GetMapping("/id/{id}/relations")
     public Set<Person> getRelations(@PathVariable int id){
         Person person = personService.findById(id);
-        Set<Person> ps = person.getPersonSet();
         return person.getPersonSet();
     }
 

@@ -1,11 +1,17 @@
 package com.globant.celebrity.finder.repository;
 
 import com.globant.celebrity.finder.model.Person;
-import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
+import java.util.Set;
 
-public interface PersonRepository extends JpaRepository<Person, Integer> {
+public interface PersonRepository {
+
+    Person save(Person person);
 
     Person findById(int id);
+
+    List<Person> getAll();
+
+    Set<Person> getPersonRelations(Person person);
 }

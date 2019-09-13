@@ -14,4 +14,9 @@ public class RestResponseEntityExceptionHandler {
     public ResponseEntity<String> handlePersonNotFoundException(RuntimeException ex){
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
     }
+
+    @ExceptionHandler(value = {PersonLocalRepositoryException.class})
+    public ResponseEntity<String> handlePersonLocalRepositoryException(RuntimeException ex){
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
 }
