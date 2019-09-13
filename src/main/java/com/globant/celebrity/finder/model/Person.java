@@ -25,11 +25,7 @@ public class Person {
 
     public Person(){}
 
-    public Person(int id) {
-        this.id = id;
-    }
-
-    public boolean knowsPerson(Person person){
+    boolean knowsPerson(Person person){
         return this.getKnownPeople().contains(person);
     }
 
@@ -45,7 +41,7 @@ public class Person {
         return name;
     }
 
-    public void setName(String name) {
+    void setName(String name) {
         this.name = name;
     }
 
