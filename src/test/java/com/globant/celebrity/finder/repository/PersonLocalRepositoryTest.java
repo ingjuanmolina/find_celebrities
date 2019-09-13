@@ -1,6 +1,8 @@
 package com.globant.celebrity.finder.repository;
 
 import com.globant.celebrity.finder.model.Person;
+import com.globant.celebrity.finder.model.PersonBuilder;
+import com.globant.celebrity.finder.util.CsvDataHandler;
 import org.hamcrest.Matchers;
 import org.junit.Assert;
 import org.junit.Before;
@@ -26,10 +28,10 @@ public class PersonLocalRepositoryTest {
     @Before
     public void setUp() {
         repository = new PersonLocalRepository();
-        charles = new Person("charles");
-        valtteri = new Person("charles");
-        lewis = new Person("charles");
-        daniel = new Person("charles");
+        charles = new PersonBuilder().withName("Charles").build();
+        valtteri = new PersonBuilder().withName("Valtteri").build();;
+        lewis = new PersonBuilder().withName("Lewis").build();
+        daniel = new PersonBuilder().withName("Daniel").build();
         repository.save(charles);
         repository.save(valtteri);
         repository.save(lewis);
@@ -38,15 +40,15 @@ public class PersonLocalRepositoryTest {
 
     @Test
     public void saveNewPersonReturnsPerson() {
-        Person niko = new Person("Niko");
+        Person niko = new PersonBuilder().withName("Niko").build();
         Person result = repository.save(niko);
         Assert.assertTrue(result instanceof Person);
     }
 
     @Test
     public void saveNewPersonIncrementsId() {
-        Person niko = new Person("Niko");
-        Person alexander = new Person("Alexander");
+        Person niko = new PersonBuilder().withName("Niko").build();
+        Person alexander = new PersonBuilder().withName("Alexander").build();
         Person firstResult = repository.save(niko);
         Person secondResult = repository.save(alexander);
         Assert.assertTrue(secondResult.getId() == (firstResult.getId() + 1));
@@ -70,8 +72,14 @@ public class PersonLocalRepositoryTest {
 
     @Test
     public void getPersonRelations() {
-        charles.getPersonSet().add(valtteri);
-        charles.getPersonSet().add(lewis);
+        charles.getKnownPeople().add(valtteri);
+        charles.getKnownPeople().add(lewis);
         Assert.assertThat(repository.getPersonRelations(charles), Matchers.hasItems(valtteri, lewis));
+    }
+
+    @Test
+    public void findByIdFromCsvLoadedData(){
+        PersonLocalRepository repository = new PersonLocalRepository(new CsvDataHandler());
+        Assert.assertThat(repository.findById(1), Matchers.is(charles));
     }
 }

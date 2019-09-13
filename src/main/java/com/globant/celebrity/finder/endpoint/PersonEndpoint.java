@@ -45,7 +45,7 @@ public class PersonEndpoint {
     @GetMapping("/id/{id}/relations")
     public Set<Person> getRelations(@PathVariable int id){
         Person person = personService.findById(id);
-        return person.getPersonSet();
+        return person.getKnownPeople();
     }
 
     @PostMapping("/relations")

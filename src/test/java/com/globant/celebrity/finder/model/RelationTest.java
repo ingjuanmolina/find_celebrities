@@ -14,8 +14,8 @@ public class RelationTest {
 
     @Test(expected = RuntimeException.class)
     public void createRelationWithSameIdThrowsException(){
-        subject = new Person(1);
-        known = new Person(1);
+        subject = new PersonBuilder().withId(1).build();
+        known = new PersonBuilder().withId(1).build();
         relation = new Relation(subject, known);
     }
 }

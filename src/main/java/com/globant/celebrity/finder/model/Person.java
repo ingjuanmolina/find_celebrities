@@ -21,32 +21,16 @@ public class Person {
             @JoinColumn(name = "known", referencedColumnName = "id")})
     @ManyToMany(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
     @JsonIgnore
-    private Set<Person> personSet;
+    private Set<Person> knownPeople;
 
     public Person(){}
-
-    public Person(String name) {
-        this.name = name;
-        this.personSet = new HashSet<>();
-    }
-
-    public Person(String name, Set<Person> personSet) {
-        this.name = name;
-        this.personSet = personSet;
-    }
-
-    public Person(int id, String name){
-        this.id = id;
-        this.name = name;
-        this.personSet = new HashSet<>();
-    }
 
     public Person(int id) {
         this.id = id;
     }
 
     public boolean knowsPerson(Person person){
-        return this.getPersonSet().contains(person);
+        return this.getKnownPeople().contains(person);
     }
 
     public int getId() {
@@ -65,18 +49,18 @@ public class Person {
         this.name = name;
     }
 
-    public Set<Person> getPersonSet() {
-        if(this.personSet==null){
-            this.personSet = new HashSet<>();
+    public Set<Person> getKnownPeople() {
+        if(this.knownPeople ==null){
+            this.knownPeople = new HashSet<>();
         }
-        return personSet;
+        return knownPeople;
     }
 
-    public void setPersonSet(Set<Person> personSet) {
-        if(personSet==null){
-            personSet = new HashSet<>();
+    public void setKnownPeople(Set<Person> knownPeople) {
+        if(knownPeople ==null){
+            knownPeople = new HashSet<>();
         }
-        this.personSet = personSet;
+        this.knownPeople = knownPeople;
     }
 
     @Override

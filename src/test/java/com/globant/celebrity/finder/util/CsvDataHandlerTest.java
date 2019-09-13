@@ -1,6 +1,7 @@
 package com.globant.celebrity.finder.util;
 
 import com.globant.celebrity.finder.model.Person;
+import com.globant.celebrity.finder.model.PersonBuilder;
 import org.hamcrest.Matchers;
 import org.junit.Assert;
 import org.junit.BeforeClass;
@@ -34,12 +35,14 @@ public class CsvDataHandlerTest {
 
     @Test
     public void collectionHasValidItems(){
-        Assert.assertThat(people, Matchers.hasItems(new Person(1, "Charles"), new Person(3, "Lewis")));
+        Person charles = new PersonBuilder().withId(1).withName("Charles").build();
+        Person lewis = new PersonBuilder().withId(3).withName("Lewis").build();
+        Assert.assertThat(people, Matchers.hasItems(charles, lewis));
     }
 
     @Test
     public void writeDataAndThenRetrieveValue(){
-        Person person = new Person(21, "Juan");
+        Person person = new PersonBuilder().withId(21).withName("Juan").build();
         csvDataHandler = new CsvDataHandler();
         csvDataHandler.write(person, "LocalData.csv");
         Assert.assertThat(csvDataHandler.loadObjectList(Person.class, "LocalData.csv"), Matchers.hasItems(person));

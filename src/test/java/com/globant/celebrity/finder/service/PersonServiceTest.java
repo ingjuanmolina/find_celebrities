@@ -1,6 +1,7 @@
 package com.globant.celebrity.finder.service;
 
 import com.globant.celebrity.finder.model.Person;
+import com.globant.celebrity.finder.model.PersonBuilder;
 import com.globant.celebrity.finder.model.Relation;
 import com.globant.celebrity.finder.repository.PersonDBRepository;
 import org.hamcrest.Matchers;
@@ -21,8 +22,8 @@ public class PersonServiceTest {
     public void setup(){
         personDBRepository = Mockito.mock(PersonDBRepository.class);
         personService = new PersonService(personDBRepository);
-        subject = new Person(1,"Juan");
-        known = new Person(2, "Carlos");
+        subject = new PersonBuilder().withId(1).withName("Juan").build();
+        known = new PersonBuilder().withId(2).withName("Carlos").build();
         Mockito.when(personDBRepository.findById(1)).thenReturn(subject);
         Mockito.when(personDBRepository.findById(2)).thenReturn(known);
         Mockito.when(personDBRepository.save(subject)).thenReturn(subject);

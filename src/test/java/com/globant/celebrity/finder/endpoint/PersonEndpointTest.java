@@ -2,6 +2,7 @@ package com.globant.celebrity.finder.endpoint;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.globant.celebrity.finder.model.Person;
+import com.globant.celebrity.finder.model.PersonBuilder;
 import com.globant.celebrity.finder.model.Relation;
 import com.globant.celebrity.finder.service.PersonService;
 import org.junit.Before;
@@ -47,9 +48,9 @@ public class PersonEndpointTest {
     public void setup(){
         people = new LinkedList<>();
         mapper = new ObjectMapper();
-        charles = new Person(1,"Charles");
-        valtteri = new Person(2, "Valtteri");
-        lewis = new Person(3, "Lewis");
+        charles = new PersonBuilder().withId(1).withName("Charles").build();
+        valtteri = new PersonBuilder().withId(2).withName("Valtteri").build();
+        lewis = new PersonBuilder().withId(3).withName("Lewis").build();
         people.add(charles);
         people.add(valtteri);
         people.add(lewis);
@@ -66,7 +67,7 @@ public class PersonEndpointTest {
 
     @Test
     public void saveReturnPersonObject() throws Exception {
-        Person daniel = new Person(4, "Daniel");
+        Person daniel = new PersonBuilder().withId(4).withName("Daniel").build();
         given(service.registerPerson(daniel)).willReturn(daniel);
 
         mockMvc.perform(post("/persons")
@@ -78,7 +79,7 @@ public class PersonEndpointTest {
 
     @Test
     public void findByIdOneReturnCharles() throws Exception {
-        given(service.findById(1)).willReturn(new Person(1, "Charles"));
+        given(service.findById(1)).willReturn(new PersonBuilder().withId(1).withName("Charles").build());
 
         mockMvc.perform(get("/persons/id/1")
                 .contentType(MediaType.APPLICATION_JSON))
@@ -88,8 +89,8 @@ public class PersonEndpointTest {
 
     @Test
     public void getPersonRelationsContainsCollection() throws Exception {
-        Person daniel = new Person(4, "Daniel");
-        daniel.setPersonSet(new HashSet<>(people));
+        Person daniel = new PersonBuilder().withId(4).withName("Daniel").build();
+        daniel.setKnownPeople(new HashSet<>(people));
 
         given(service.findById(4)).willReturn(daniel);
 
@@ -126,8 +127,8 @@ public class PersonEndpointTest {
 
     @Test
     public void lewisIsCelebrity() throws Exception {
-        charles.getPersonSet().add(lewis);
-        valtteri.getPersonSet().add(lewis);
+        charles.getKnownPeople().add(lewis);
+        valtteri.getKnownPeople().add(lewis);
         given(service.getAll()).willReturn(people);
 
         mockMvc.perform(get("/persons/celebrities")
@@ -140,9 +141,9 @@ public class PersonEndpointTest {
 
     @Test
     public void lewisIsNotCelebrityIfThereIsANewPerson() throws Exception {
-        charles.getPersonSet().add(lewis);
-        valtteri.getPersonSet().add(lewis);
-        people.add(new Person(4, "Daniel"));
+        charles.getKnownPeople().add(lewis);
+        valtteri.getKnownPeople().add(lewis);
+        people.add(new PersonBuilder().withId(4).withName("Daniel").build());
         given(service.getAll()).willReturn(people);
 
         mockMvc.perform(get("/persons/celebrities")
@@ -152,10 +153,10 @@ public class PersonEndpointTest {
 
     @Test
     public void lewisTurnsAgainCelebrityIfNewPersonKnowsHim() throws Exception {
-        charles.getPersonSet().add(lewis);
-        valtteri.getPersonSet().add(lewis);
-        Person daniel = new Person(4, "Daniel");
-        daniel.getPersonSet().add(lewis);
+        charles.getKnownPeople().add(lewis);
+        valtteri.getKnownPeople().add(lewis);
+        Person daniel = new PersonBuilder().withId(4).withName("Daniel").build();
+        daniel.getKnownPeople().add(lewis);
         people.add(daniel);
         given(service.getAll()).willReturn(people);
 

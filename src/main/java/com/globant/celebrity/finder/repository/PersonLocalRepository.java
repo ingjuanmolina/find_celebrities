@@ -2,6 +2,7 @@ package com.globant.celebrity.finder.repository;
 
 import com.globant.celebrity.finder.exception.PersonLocalRepositoryException;
 import com.globant.celebrity.finder.model.Person;
+import com.globant.celebrity.finder.util.CsvDataHandler;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;
@@ -13,8 +14,12 @@ public class PersonLocalRepository implements PersonRepository{
     private int id;
 
     public PersonLocalRepository(){
-        this.people = new HashSet<>();
         this.id = 0;
+        this.people = new HashSet<>();
+    }
+
+    public PersonLocalRepository(CsvDataHandler csvDataHandler) {
+        this.people = new HashSet<>(csvDataHandler.loadObjectList(Person.class, "LocalData.csv"));
     }
 
     @Override
@@ -41,6 +46,6 @@ public class PersonLocalRepository implements PersonRepository{
 
     @Override
     public Set<Person> getPersonRelations(Person person){
-        return new HashSet<>(findById(person.getId()).getPersonSet());
+        return new HashSet<>(findById(person.getId()).getKnownPeople());
     }
 }

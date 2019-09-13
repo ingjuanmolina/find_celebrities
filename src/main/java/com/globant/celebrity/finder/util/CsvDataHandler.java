@@ -42,14 +42,13 @@ public class CsvDataHandler {
         CsvSchema schema = mapper.schemaFor(Person.class);
         try {
             ObjectWriter writer = mapper.writer(schema.withColumnSeparator(CsvSchema.DEFAULT_COLUMN_SEPARATOR));
-            //String csv = mapper.writer(schema).writeValueAsString(person);
             File file = new ClassPathResource(fileName).getFile();
-            OutputStream outstream = new FileOutputStream(file , true);
-            writer.writeValue(outstream, person);
+            OutputStream outStream = new FileOutputStream(file , true);
+            writer.writeValue(outStream, person);
         } catch (JsonProcessingException e) {
-            e.printStackTrace();
+            logger.error("Error trying to process CSV file.");
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error("Error trying to write CSV file.");
         }
     }
 }

@@ -28,7 +28,7 @@ public class PersonService {
     public Relation establishRelation(Relation relation){
         Person subject = findById(relation.getSubject().getId());
         Person known = findById(relation.getKnown().getId());
-        subject.getPersonSet().add(known);
+        subject.getKnownPeople().add(known);
         personDBRepository.save(subject);
         return new Relation(subject, known);
     }
@@ -46,6 +46,6 @@ public class PersonService {
     }
 
     public Set<Person> getPersonRelations(Person person){
-        return personDBRepository.findById(person.getId()).getPersonSet();
+        return personDBRepository.findById(person.getId()).getKnownPeople();
     }
 }
