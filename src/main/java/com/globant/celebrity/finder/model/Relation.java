@@ -1,5 +1,7 @@
 package com.globant.celebrity.finder.model;
 
+import com.globant.celebrity.finder.exception.IllegalRelationException;
+
 public class Relation {
 
     private Person subject;
@@ -10,7 +12,7 @@ public class Relation {
 
     public Relation(Person subject, Person known) {
         if(subject.equals(known)){
-            throw new RuntimeException("Can't relate a person with itself");
+            throw new IllegalRelationException("Can't relate a person with itself");
         }
         this.subject = subject;
         this.known = known;

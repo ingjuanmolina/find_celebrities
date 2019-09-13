@@ -19,4 +19,9 @@ public class RestResponseEntityExceptionHandler {
     public ResponseEntity<String> handlePersonLocalRepositoryException(RuntimeException ex){
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
+    @ExceptionHandler(value = {IllegalRelationException.class})
+    public ResponseEntity<String> handleIllegalRelationException(RuntimeException ex){
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+    }
 }
