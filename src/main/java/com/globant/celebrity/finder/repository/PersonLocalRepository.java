@@ -13,7 +13,6 @@ public class PersonLocalRepository implements PersonRepository{
     private Set<Person> people;
     private Map<Integer, Set<Integer>> relationsMap;
     private CsvDataHandler csvDataHandler = new CsvDataHandler();
-    private int id;
 
     public PersonLocalRepository(){
         readPeopleFromCsvFile();
@@ -35,22 +34,26 @@ public class PersonLocalRepository implements PersonRepository{
                 .forEach(this::establishRelation);
     }
 
+    private boolean hasRelations(Person subject){
+        return relationsMap.containsKey(subject.getId());
+    }
+
     private void establishRelation(Person subject){
         relationsMap.get(subject.getId())
                 .forEach(integer -> subject.getKnownPeople().add(findById(integer)));
     }
 
-    private boolean hasRelations(Person subject){
-        return relationsMap.containsKey(subject.getId());
-    }
-
     @Override
     public Person save(Person person){
         if(people.add(person)) {
-            person.setId(++this.id);
+            person.setId(setNewId());
             return person;
         }
         throw new PersonLocalRepositoryException("It's not possible to save person");
+    }
+
+    public int setNewId(){
+        return people.parallelStream().max((p1, p2) -> Integer.compare(p1.getId(), p2.getId())).get().getId() + 1;
     }
 
     @Override
