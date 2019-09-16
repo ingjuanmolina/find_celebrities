@@ -77,4 +77,12 @@ public class PersonLocalRepositoryTest {
         PersonLocalRepository repository = new PersonLocalRepository();
         Assert.assertThat(repository.findById(1), Matchers.is(charles));
     }
+
+    @Test
+    public void charlesHasRelationsFromCsvLoadedData(){
+        PersonLocalRepository repository = new PersonLocalRepository();
+        Person nico = repository.findById(5);
+        Person sergio = repository.findById(7);
+        Assert.assertThat(charles.getKnownPeople(), Matchers.hasItems(lewis, nico, sergio));
+    }
 }

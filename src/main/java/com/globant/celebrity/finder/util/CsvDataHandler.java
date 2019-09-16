@@ -67,8 +67,8 @@ public class CsvDataHandler {
     public <T> void write(T type, String fileName){
         try {
             Class typeClass = type.getClass();
-            CsvSchema schema = mapper.schemaFor(typeClass);
-            ObjectWriter writer = mapper.writer(schema.withColumnSeparator(CsvSchema.DEFAULT_COLUMN_SEPARATOR).withoutHeader());
+            CsvSchema schemaByClass = mapper.schemaFor(typeClass);
+            ObjectWriter writer = mapper.writer(schemaByClass.withColumnSeparator(CsvSchema.DEFAULT_COLUMN_SEPARATOR).withoutHeader());
             File file = new ClassPathResource(fileName).getFile();
             OutputStream outStream = new FileOutputStream(file , true);
             writer.writeValue(outStream, type);

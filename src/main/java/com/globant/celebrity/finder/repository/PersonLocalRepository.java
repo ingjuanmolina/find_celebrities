@@ -30,15 +30,18 @@ public class PersonLocalRepository implements PersonRepository{
     }
 
     private void buildRelations(){
-        for(Person subject : people){
-            int id = subject.getId();
-            if(relationsMap.containsKey(id)){
-                for(Integer knownId : relationsMap.get(id)){
-                    Person known = findById(knownId);
-                    subject.getKnownPeople().add(known);
-                }
-            }
-        }
+        people.parallelStream()
+                .filter(this::hasRelations)
+                .forEach(this::establishRelation);
+    }
+
+    private void establishRelation(Person subject){
+        relationsMap.get(subject.getId())
+                .forEach(integer -> subject.getKnownPeople().add(findById(integer)));
+    }
+
+    private boolean hasRelations(Person subject){
+        return relationsMap.containsKey(subject.getId());
     }
 
     @Override
