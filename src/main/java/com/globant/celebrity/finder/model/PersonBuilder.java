@@ -1,5 +1,7 @@
 package com.globant.celebrity.finder.model;
 
+import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 public class PersonBuilder {
@@ -27,6 +29,9 @@ public class PersonBuilder {
         Person person = new Person();
         person.setId(this.id);
         person.setName(this.name);
+        if(Objects.isNull(this.knownPeople)){
+            this.knownPeople = new HashSet<>();
+        }
         person.setKnownPeople(this.knownPeople);
         return person;
     }

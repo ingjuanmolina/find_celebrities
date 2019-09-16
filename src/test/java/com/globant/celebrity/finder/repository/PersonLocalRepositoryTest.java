@@ -2,7 +2,6 @@ package com.globant.celebrity.finder.repository;
 
 import com.globant.celebrity.finder.model.Person;
 import com.globant.celebrity.finder.model.PersonBuilder;
-import com.globant.celebrity.finder.util.CsvDataHandler;
 import org.hamcrest.Matchers;
 import org.junit.Assert;
 import org.junit.Before;
@@ -28,14 +27,10 @@ public class PersonLocalRepositoryTest {
     @Before
     public void setUp() {
         repository = new PersonLocalRepository();
-        charles = new PersonBuilder().withName("Charles").build();
-        valtteri = new PersonBuilder().withName("Valtteri").build();;
-        lewis = new PersonBuilder().withName("Lewis").build();
-        daniel = new PersonBuilder().withName("Daniel").build();
-        repository.save(charles);
-        repository.save(valtteri);
-        repository.save(lewis);
-        repository.save(daniel);
+        charles = repository.findById(1);
+        valtteri = repository.findById(2);
+        lewis = repository.findById(3);
+        daniel = repository.findById(4);
     }
 
     @Test
@@ -61,13 +56,13 @@ public class PersonLocalRepositoryTest {
     }
 
     @Test
-    public void findByIdTwentyIsNull() {
-        Assert.assertNull(repository.findById(20));
+    public void findByIdFortyIsNull() {
+        Assert.assertNull(repository.findById(40));
     }
 
     @Test
     public void getAll() {
-        Assert.assertThat(repository.getAll(), Matchers.hasItems(charles, valtteri, lewis, daniel));
+        Assert.assertThat(repository.findAll(), Matchers.hasItems(charles, valtteri, lewis, daniel));
     }
 
     @Test
@@ -79,7 +74,7 @@ public class PersonLocalRepositoryTest {
 
     @Test
     public void findByIdFromCsvLoadedData(){
-        PersonLocalRepository repository = new PersonLocalRepository(new CsvDataHandler());
+        PersonLocalRepository repository = new PersonLocalRepository();
         Assert.assertThat(repository.findById(1), Matchers.is(charles));
     }
 }

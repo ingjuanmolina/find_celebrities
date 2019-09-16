@@ -5,7 +5,6 @@ import com.globant.celebrity.finder.model.RelationTest;
 import com.globant.celebrity.finder.repository.PersonLocalRepositoryTest;
 import com.globant.celebrity.finder.service.PersonServiceTest;
 import com.globant.celebrity.finder.util.CsvDataHandlerTest;
-import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.springframework.boot.test.context.SpringBootTest;

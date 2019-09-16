@@ -10,6 +10,8 @@ import org.junit.runner.RunWith;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 @RunWith(SpringRunner.class)
 public class CsvDataHandlerTest {
@@ -19,8 +21,8 @@ public class CsvDataHandlerTest {
 
     @BeforeClass
     public static void init(){
-        CsvDataHandler dataLoader = new CsvDataHandler();
-        people = dataLoader.loadObjectList(Person.class, "LocalData.csv");
+        CsvDataHandler csvDataHandler = new CsvDataHandler();
+        people = csvDataHandler.getListFromCsv(Person.class, "LocalData.csv");
     }
 
     @Test
@@ -45,7 +47,16 @@ public class CsvDataHandlerTest {
         Person person = new PersonBuilder().withId(21).withName("Juan").build();
         csvDataHandler = new CsvDataHandler();
         csvDataHandler.write(person, "LocalData.csv");
-        Assert.assertThat(csvDataHandler.loadObjectList(Person.class, "LocalData.csv"), Matchers.hasItems(person));
+        Assert.assertThat(csvDataHandler.getListFromCsv(Person.class, "LocalData.csv"), Matchers.hasItems(person));
+    }
+
+    @Test
+    public void readRelationsFromCsvFile(){
+        CsvDataHandler csvDataHandler = new CsvDataHandler();
+        Map<Integer, Set<Integer>> mapOfSetFromCsv = csvDataHandler.getIntegerMapOfSetFromCsv("LocalRelations.csv");
+        Assert.assertThat(mapOfSetFromCsv.get(1), Matchers.hasItems(3, 5, 7));
+        Assert.assertThat(mapOfSetFromCsv.get(2), Matchers.hasItems(3, 4, 9));
+        Assert.assertThat(mapOfSetFromCsv.get(4), Matchers.hasItems(3, 8, 9, 10));
     }
 
 }

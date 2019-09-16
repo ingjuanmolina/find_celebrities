@@ -11,7 +11,7 @@ public interface PersonRepository {
 
     Person findById(int id);
 
-    List<Person> getAll();
+    List<Person> findAll();
 
     Set<Person> getPersonRelations(Person person);
 }

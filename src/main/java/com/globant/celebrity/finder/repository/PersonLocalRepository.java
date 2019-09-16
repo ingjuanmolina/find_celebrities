@@ -11,15 +11,34 @@ import java.util.*;
 public class PersonLocalRepository implements PersonRepository{
 
     private Set<Person> people;
+    private Map<Integer, Set<Integer>> relationsMap;
+    private CsvDataHandler csvDataHandler = new CsvDataHandler();
     private int id;
 
     public PersonLocalRepository(){
-        this.id = 0;
-        this.people = new HashSet<>();
+        readPeopleFromCsvFile();
+        readRelationsFromCsvFile();
+        buildRelations();
     }
 
-    public PersonLocalRepository(CsvDataHandler csvDataHandler) {
-        this.people = new HashSet<>(csvDataHandler.loadObjectList(Person.class, "LocalData.csv"));
+    private void readPeopleFromCsvFile(){
+        this.people = new HashSet<>(csvDataHandler.getListFromCsv(Person.class, "LocalData.csv"));
+    }
+
+    private void readRelationsFromCsvFile(){
+        this.relationsMap = csvDataHandler.getIntegerMapOfSetFromCsv("LocalRelations.csv");
+    }
+
+    private void buildRelations(){
+        for(Person subject : people){
+            int id = subject.getId();
+            if(relationsMap.containsKey(id)){
+                for(Integer knownId : relationsMap.get(id)){
+                    Person known = findById(knownId);
+                    subject.getKnownPeople().add(known);
+                }
+            }
+        }
     }
 
     @Override
@@ -40,7 +59,7 @@ public class PersonLocalRepository implements PersonRepository{
     }
 
     @Override
-    public List<Person> getAll(){
+    public List<Person> findAll(){
         return new LinkedList<>(people);
     }
 
