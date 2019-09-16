@@ -1,6 +1,6 @@
 Celebrity Finder is a Spring Boot Application that solves "Find the Celebrity" problem.
 
-It has an H2 In-Memory Database that stores initial values from /resources/data.sql file.
+It supports an H2 In-Memory Database that stores initial values from /resources/data.sql file. It also supports data upload from CSV files by using CsvDataHandler class.
 
 Exposes the following endpoints:
 
