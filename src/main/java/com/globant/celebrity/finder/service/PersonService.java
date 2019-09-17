@@ -3,8 +3,9 @@ package com.globant.celebrity.finder.service;
 import com.globant.celebrity.finder.exception.PersonNotFoundException;
 import com.globant.celebrity.finder.model.Person;
 import com.globant.celebrity.finder.model.Relation;
-import com.globant.celebrity.finder.repository.PersonDBRepository;
+import com.globant.celebrity.finder.repository.PersonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,28 +14,27 @@ import java.util.Set;
 
 @Service
 public class PersonService {
-
-    private PersonDBRepository personDBRepository;
+    private PersonRepository repository;
 
     @Autowired
-    public PersonService(PersonDBRepository personDBRepository){
-        this.personDBRepository = personDBRepository;
+    public PersonService(@Qualifier("PersonDBRepository") PersonRepository repository){
+        this.repository = repository;
     }
 
     public Person registerPerson(Person person){
-        return personDBRepository.save(person);
+        return repository.save(person);
     }
 
     public Relation establishRelation(Relation relation){
         Person subject = findById(relation.getSubject().getId());
         Person known = findById(relation.getKnown().getId());
         subject.getKnownPeople().add(known);
-        personDBRepository.save(subject);
+        repository.save(subject);
         return new Relation(subject, known);
     }
 
     public Person findById(int id) {
-        Person person = personDBRepository.findById(id);
+        Person person = repository.findById(id);
         if(Objects.isNull(person)){
             throw new PersonNotFoundException(String.format("Person with id %d was not found", id));
         }
@@ -42,10 +42,10 @@ public class PersonService {
     }
 
     public List<Person> getAll(){
-        return personDBRepository.findAll();
+        return repository.findAll();
     }
 
     public Set<Person> getPersonRelations(Person person){
-        return personDBRepository.findById(person.getId()).getKnownPeople();
+        return repository.findById(person.getId()).getKnownPeople();
     }
 }
