@@ -3,7 +3,6 @@ package com.globant.celebrity.finder.model;
 import com.globant.celebrity.finder.exception.IllegalRelationException;
 
 public class Relation {
-
     private Person subject;
     private Person known;
 

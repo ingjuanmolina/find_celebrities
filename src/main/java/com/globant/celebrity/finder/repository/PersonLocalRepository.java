@@ -43,7 +43,6 @@ public class PersonLocalRepository implements PersonRepository{
                 .forEach(integer -> subject.getKnownPeople().add(findById(integer)));
     }
 
-    @Override
     public Person save(Person person){
         if(people.add(person)) {
             person.setId(setNewId());
@@ -52,11 +51,14 @@ public class PersonLocalRepository implements PersonRepository{
         throw new PersonLocalRepositoryException("It's not possible to save person");
     }
 
-    public int setNewId(){
-        return people.parallelStream().max((p1, p2) -> Integer.compare(p1.getId(), p2.getId())).get().getId() + 1;
+    private int setNewId(){
+        Optional<Person> personWithMaxId = people.parallelStream().max((p1, p2) -> Integer.compare(p1.getId(), p2.getId()));
+        if(personWithMaxId.isPresent()) {
+            return personWithMaxId.get().getId() + 1;
+        }
+        throw new PersonLocalRepositoryException("It is not possible to find max id");
     }
 
-    @Override
     public Person findById(int id){
         return people.parallelStream()
                         .filter(p -> p.getId() == id)
@@ -64,12 +66,10 @@ public class PersonLocalRepository implements PersonRepository{
                         .orElse(null);
     }
 
-    @Override
     public List<Person> findAll(){
         return new LinkedList<>(people);
     }
 
-    @Override
     public Set<Person> getPersonRelations(Person person){
         return new HashSet<>(findById(person.getId()).getKnownPeople());
     }
